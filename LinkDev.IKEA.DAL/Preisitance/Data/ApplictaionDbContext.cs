@@ -11,7 +11,12 @@ namespace LinkDev.IKEA.DAL.Preisitance.Data
 {
     public class ApplictaionDbContext : DbContext
     {
-         
+
+        public ApplictaionDbContext(DbContextOptions<ApplictaionDbContext> option):base(option)
+        {
+            
+        }
+
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
