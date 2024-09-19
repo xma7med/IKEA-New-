@@ -21,7 +21,7 @@ namespace LinkDev.IKEA.DAL.Preisitance.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server = . ; Database = IKEA_G03 ; Trusted_Connection = True ; TrustedServerCertificate = True " );
+            optionsBuilder.UseSqlServer("Server = . ; Database = IKEA_G03 ; Trusted_Connection = True ; TrustServerCertificate=True; ");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
