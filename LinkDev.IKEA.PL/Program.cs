@@ -1,3 +1,5 @@
+using LinkDev.IKEA.DAL.Preisitance.Data;
+
 namespace LinkDev.IKEA.PL
 {
     public class Program
@@ -8,9 +10,21 @@ namespace LinkDev.IKEA.PL
             var builder = WebApplication.CreateBuilder(args);
 
             #region Configure Services 
+
+
+
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
+
+            builder.Services.AddScoped<ApplictaionDbContext>();
+            builder.Services.AddDbContext<ApplictaionDbContext>();
+
+            //builder .Services.AddDbContext<ApplictaionDbContext>( (optionsBuilder )=>
+            //{
+            //    optionsBuilder.UseSqlServer(builder . Configuration.GetConnectionString("DefaultConnection"));
+
+            //});
             #endregion
 
 
