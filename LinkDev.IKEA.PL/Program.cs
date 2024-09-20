@@ -1,7 +1,10 @@
+using LinkDev.IKEA.BLL.Services.Departments;
 using LinkDev.IKEA.DAL.Preisitance.Data;
+using LinkDev.IKEA.DAL.Preisitance.Repositories.Departments;
 
 namespace LinkDev.IKEA.PL
 {
+    // New 
     public class Program
     {
         //  Entry Point 
@@ -20,11 +23,19 @@ namespace LinkDev.IKEA.PL
             builder.Services.AddScoped<ApplictaionDbContext>();
             builder.Services.AddDbContext<ApplictaionDbContext>();
 
-            //builder .Services.AddDbContext<ApplictaionDbContext>( (optionsBuilder )=>
+            //builder.Services.AddDbContext<ApplictaionDbContext>((optionsBuilder) =>
             //{
-            //    optionsBuilder.UseSqlServer(builder . Configuration.GetConnectionString("DefaultConnection"));
+            //    optionsBuilder.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 
             //});
+
+            builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+            // if (x>10)
+            builder.Services.AddScoped<IDepartmentService, DepartmentService>();
+            // else 
+            //builder.Services.AddScoped<IDepartmentService, DepartmentServiceX>();
+            
+
             #endregion
 
 
