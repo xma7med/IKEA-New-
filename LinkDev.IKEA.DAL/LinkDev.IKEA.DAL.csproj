@@ -9,7 +9,6 @@
   <ItemGroup>
     <Folder Include="Preisitance\Data\Migrations\" />
     <Folder Include="Preisitance\Data\Data Seeds\" />
-    <Folder Include="Preisitance\Repositories\" />
   </ItemGroup>
 
   <ItemGroup>

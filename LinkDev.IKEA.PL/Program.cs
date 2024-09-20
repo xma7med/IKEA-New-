@@ -20,9 +20,9 @@ namespace LinkDev.IKEA.PL
             builder.Services.AddScoped<ApplictaionDbContext>();
             builder.Services.AddDbContext<ApplictaionDbContext>();
 
-            //builder .Services.AddDbContext<ApplictaionDbContext>( (optionsBuilder )=>
+            //builder.Services.AddDbContext<ApplictaionDbContext>((optionsBuilder) =>
             //{
-            //    optionsBuilder.UseSqlServer(builder . Configuration.GetConnectionString("DefaultConnection"));
+            //    optionsBuilder.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 
             //});
             #endregion
