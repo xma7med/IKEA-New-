@@ -1,4 +1,4 @@
-﻿using LinkDev.IKEA.DAL.Models.Department;
+﻿using LinkDev.IKEA.DAL.Entities.Department;
 using LinkDev.IKEA.DAL.Preisitance.Data;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -26,8 +26,11 @@ namespace LinkDev.IKEA.DAL.Preisitance.Repositories.Departments
 
             return _dbContext.Departments.ToList(); ;
         }
-
-        public Department? GetById(int id)
+        public IQueryable<Department> GetAllAsIQueryable()
+        {
+            return _dbContext.Departments;
+        }
+        public Department? Get(int id)
         { 
             return  _dbContext.Departments.Find(id);
             //return _dbContext.Find<Department>(id);
@@ -57,8 +60,6 @@ namespace LinkDev.IKEA.DAL.Preisitance.Repositories.Departments
             return _dbContext.SaveChanges();
         }
 
-        
-
-        
+       
     }
 }

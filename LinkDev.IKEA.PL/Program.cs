@@ -1,7 +1,9 @@
 using LinkDev.IKEA.DAL.Preisitance.Data;
+using LinkDev.IKEA.DAL.Preisitance.Repositories.Departments;
 
 namespace LinkDev.IKEA.PL
 {
+    // New 
     public class Program
     {
         //  Entry Point 
@@ -25,6 +27,8 @@ namespace LinkDev.IKEA.PL
             //    optionsBuilder.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 
             //});
+
+            builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
             #endregion
 
 
