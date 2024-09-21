@@ -1,4 +1,5 @@
 ﻿using LinkDev.IKEA.DAL.Entities.Department;
+using LinkDev.IKEA.DAL.Entities.Employees;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -19,10 +20,10 @@ namespace LinkDev.IKEA.DAL.Preisitance.Data
 
 
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer("Server = . ; Database = IKEA_G03 ; Trusted_Connection = True ; TrustServerCertificate=True; ");
-        }
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    optionsBuilder.UseSqlServer("Server = . ; Database = IKEA_G03 ; Trusted_Connection = True ; TrustServerCertificate=True; ");
+        //}
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -31,6 +32,7 @@ namespace LinkDev.IKEA.DAL.Preisitance.Data
         }
         public DbSet<Department> Departments { get; set; }
 
+        public DbSet<Employee> Employees { get; set; }
 
     }
 }

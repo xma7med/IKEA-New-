@@ -1,6 +1,7 @@
 using LinkDev.IKEA.BLL.Services.Departments;
 using LinkDev.IKEA.DAL.Preisitance.Data;
 using LinkDev.IKEA.DAL.Preisitance.Repositories.Departments;
+using Microsoft.EntityFrameworkCore;
 
 namespace LinkDev.IKEA.PL
 {
@@ -21,13 +22,13 @@ namespace LinkDev.IKEA.PL
 
 
             builder.Services.AddScoped<ApplictaionDbContext>();
-            builder.Services.AddDbContext<ApplictaionDbContext>();
+           // builder.Services.AddDbContext<ApplictaionDbContext>();
 
-            //builder.Services.AddDbContext<ApplictaionDbContext>((optionsBuilder) =>
-            //{
-            //    optionsBuilder.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+            builder.Services.AddDbContext<ApplictaionDbContext>((optionsBuilder) =>
+            {
+                optionsBuilder.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 
-            //});
+            });
 
             builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
             // if (x>10)

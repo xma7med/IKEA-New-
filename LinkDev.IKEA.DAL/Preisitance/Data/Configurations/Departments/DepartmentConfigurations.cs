@@ -16,7 +16,7 @@ namespace LinkDev.IKEA.DAL.Preisitance.Data.Configurations.Departments
             builder.Property(D => D.Id).UseIdentityColumn(10,10);
             builder.Property(D => D.Name).HasColumnType("varchar(50)").IsRequired();
             builder.Property(D => D.Code).HasColumnType("varchar(20)").IsRequired();
-            builder.Property(D => D.CreatedOn).HasDefaultValueSql("GETDATE()");
+            builder.Property(D => D.CreatedOn).HasDefaultValueSql("GETUTCDATE()");
             // builder.Property(D => D.CreatedBy).HasDefaultValueSql("");
             builder.Property(D=> D.LastModifiedOn).HasComputedColumnSql("GETDATE()");
             // builder.Property(D => D.LastModifiedBy).HasComputedColumnSql("");
