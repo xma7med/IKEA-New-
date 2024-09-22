@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 
 namespace LinkDev.IKEA.BLL.Model.Department
 {
-    public  class DepartmentToReturnDto
+    // Use ut in depts Listting 
+    public  class DepartmentDto
     {
         public int Id { get; set; }
         public string Code { get; set; } = null!;
@@ -29,4 +30,6 @@ namespace LinkDev.IKEA.BLL.Model.Department
         //    };
         //}
     }
+
+    
 }
