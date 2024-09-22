@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LinkDev.IKEA.DAL.Preisitance.Repositories._Generic
 {
-    public class GenaricRepository<T> where T : ModelBase
+    public class GenaricRepository<T> : IGenericRepository<T>  where T : ModelBase 
     {
         private protected readonly ApplictaionDbContext _dbContext;
 
@@ -21,9 +21,13 @@ namespace LinkDev.IKEA.DAL.Preisitance.Repositories._Generic
 
             return _dbContext.Set<T>().Where(X => !X.IsDeleted).ToList(); ;
         }
-        public IQueryable<T> GetAllAsIQueryable()
+        public IQueryable<T> GetIQueryable()
         {
             return _dbContext.Set<T>();
+        }
+        public IEnumerable<T> GetIEnumerable()
+        {
+            throw new NotImplementedException();
         }
         public T? Get(int id)
         {
@@ -59,6 +63,7 @@ namespace LinkDev.IKEA.DAL.Preisitance.Repositories._Generic
             /// _dbContext.Set<T>().Remove(entity);
             /// return _dbContext.SaveChanges();
         }
+
     }
     
 }

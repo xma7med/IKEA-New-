@@ -8,8 +8,7 @@ using System;
 
 namespace LinkDev.IKEA.PL.Controllers
 {
-    // Inheritance : DepartmentController is a Controller 
-    // Composition : DepartmentController has a IDepartmentService
+    
     public class DepartmentController : Controller
     {
         //[FromServices]
@@ -33,7 +32,7 @@ namespace LinkDev.IKEA.PL.Controllers
 
 
         #region Index
-        [HttpGet] // Get : .. / Department / Index
+        [HttpGet] 
         public IActionResult Index()
         {
             var departments = _departmentService.GetAllDepartments();
@@ -45,7 +44,7 @@ namespace LinkDev.IKEA.PL.Controllers
 
 
 
-        [HttpGet] // Get : /Department/Details/id 
+        [HttpGet]
 
         public IActionResult Details(int? id)
         {

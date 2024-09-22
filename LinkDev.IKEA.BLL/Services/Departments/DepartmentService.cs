@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace LinkDev.IKEA.BLL.Services.Departments
 {
     public class DepartmentService : IDepartmentService
-    {
+    { 
         private readonly IDepartmentRepository _departmentRepository;
 
         public DepartmentService(IDepartmentRepository departmentRepository)// ASK CLR for Creating Object from Class Implemnting the Interface "IDepartmentRepositry"
@@ -20,7 +20,7 @@ namespace LinkDev.IKEA.BLL.Services.Departments
         }
         public IEnumerable<DepartmentDto> GetAllDepartments()
         {
-            var departments = _departmentRepository.GetAllAsIQueryable().Select(department => new DepartmentDto()
+            var departments = _departmentRepository.GetIQueryable().Select(department => new DepartmentDto()
             {
                 Id = department.Id,
                 Code = department.Code,
