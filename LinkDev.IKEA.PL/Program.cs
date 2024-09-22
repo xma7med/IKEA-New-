@@ -1,6 +1,8 @@
 using LinkDev.IKEA.BLL.Services.Departments;
+using LinkDev.IKEA.BLL.Services.Employees;
 using LinkDev.IKEA.DAL.Preisitance.Data;
 using LinkDev.IKEA.DAL.Preisitance.Repositories.Departments;
+using LinkDev.IKEA.DAL.Preisitance.Repositories.Employees;
 using Microsoft.EntityFrameworkCore;
 
 namespace LinkDev.IKEA.PL
@@ -21,7 +23,7 @@ namespace LinkDev.IKEA.PL
             builder.Services.AddControllersWithViews();
 
 
-            builder.Services.AddScoped<ApplictaionDbContext>();
+           // builder.Services.AddScoped<ApplictaionDbContext>();
            // builder.Services.AddDbContext<ApplictaionDbContext>();
 
             builder.Services.AddDbContext<ApplictaionDbContext>((optionsBuilder) =>
@@ -31,11 +33,17 @@ namespace LinkDev.IKEA.PL
             });
 
             builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+            builder.Services.AddScoped<IEmployeeReposiory, EmployeeRepository>();
+
+
+
             // if (x>10)
             builder.Services.AddScoped<IDepartmentService, DepartmentService>();
+            builder.Services.AddScoped<IEmployeeService, EmployeeService>();    
             // else 
             //builder.Services.AddScoped<IDepartmentService, DepartmentServiceX>();
-            
+
+
 
             #endregion
 

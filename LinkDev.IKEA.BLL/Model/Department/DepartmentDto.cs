@@ -30,4 +30,6 @@ namespace LinkDev.IKEA.BLL.Model.Department
         //    };
         //}
     }
+
+    
 }

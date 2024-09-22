@@ -32,8 +32,8 @@ namespace LinkDev.IKEA.BLL.Services.Employees
                 Email = employee.Email,
                 PhoneNumber = employee.PhoneNumber,
                 HiringDate = employee.HiringDate,
-                Gender = nameof(employee.Gender),
-                EmployeeType = nameof(employee.EmployeeType),
+                Gender = employee.Gender.ToString(),
+                EmployeeType =employee.EmployeeType.ToString(),
 
             });
         }

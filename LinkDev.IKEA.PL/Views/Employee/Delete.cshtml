@@ -1,19 +1,16 @@
-﻿@model DepartmentDetailsDto 
-
-
-
-
-<h1>Depratment  Details</h1>
+﻿@model DepartmentDetailsDto
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Delete";
 }
 
-<h1>Department Details</h1>
+<h1>Are You Sure To Delete Department ?</h1>
+
 
 <br />
 <br />
 
+<!--Bootdtrap Tabs   -->
 <ul class="nav nav-tabs" id="departmentTabs" role="tablist">
     <li class="nav-item" role="presentation">
         <a class="nav-link active" id="general-tab" data-bs-toggle="tab" href="#general" role="tab" aria-controls="general" aria-selected="true">General</a>
@@ -49,7 +46,6 @@
     <!-- Administration Tab Content -->
     <div class="tab-pane fade p-4 border" id="administration" role="tabpanel" aria-labelledby="administration-tab">
         <div class="row">
-
             <!-- Created By -->
             <div class="form-group col-6">
                 <label class="col-form-label" asp-for="CreatedBy"></label>
@@ -73,14 +69,14 @@
                 <label class="col-form-label" asp-for="LastModifiedOn"></label>
                 <input asp-for="LastModifiedOn" class="form-control" readonly />
             </div>
-
         </div>
     </div>
 </div>
 
 <!-- Action Buttons -->
-<div class="mt-4">
-    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-success">Edit</a>
-    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
-</div>
+<form  asp-action ="Delete" asp-route ="@Model.Id"  method="post" class="mt-4">
+    <input type="submit"  value="Delete" class="btn btn-danger"/>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>
+
 
