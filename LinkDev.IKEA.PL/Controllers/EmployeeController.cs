@@ -4,6 +4,7 @@ using LinkDev.IKEA.BLL.Services.Departments;
 using LinkDev.IKEA.BLL.Services.Employees;
 using LinkDev.IKEA.DAL.Entities.Employees;
 using LinkDev.IKEA.PL.ViewModels.Departments;
+using LinkDev.IKEA.PL.ViewModels.Employee;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LinkDev.IKEA.PL.Controllers
@@ -107,75 +108,91 @@ namespace LinkDev.IKEA.PL.Controllers
 
         #region Update
 
-        //[HttpGet] // GET : / Employee/Edit/id? 
-        //public IActionResult Edit(int? id)
-        //{
-        //    if (id is null)
-        //        return BadRequest();// 400
-        //    var employee = _employeeService.GetEmployeeById(id.Value);
+       [HttpGet] // GET : / Employee/Edit/id? 
+       public IActionResult Edit(int? id)
+       {
+           if (id is null)
+               return BadRequest();// 400
+           var employee = _employeeService.GetEmployeeById(id.Value);
 
-        //    if (employee == null)
-        //        return NotFound(); // 404
-        //    return View(new EmployeeEditViewModel()
-        //    {
-        //        Code = employee.Code,
-        //        Name = employee.Name,
-        //        Description = employee.Description,
-        //        CreationDate = employee.CreationDate,
-        //    });
-        //}
-
-        //[HttpPost] // Post 
-        //// from ACTION from url 
-        //public IActionResult Edit([FromRoute] int id, EmployeeEditViewModel employeeVM)
-        //{
-        //    if (!ModelState.IsValid)// Server Side Validation 
-        //        return View(employeeVM);
-
-        //    var message = string.Empty;
-        //    try
-        //    {
-        //        // Mapping 
-        //        var employeeToUpdate = new UpdatedEmployeeDto()
-        //        {
-        //            Code = employeeVM.Code,
-        //            Name = employeeVM.Name,
-        //            Description = employeeVM.Description,
-        //            CreationDate = employeeVM.CreationDate,
-
-        //        };
+           if (employee == null)
+               return NotFound(); // 404
+           return View(new UpdatedEmployeeDto /*EmployeeEditViewModel*/()
+           {
+               Name = employee.Name,
+               Address = employee.Address,
+               Email = employee.Email,  
+               Age = employee.Age,
+               Salary = employee.Salary,
+               PhoneNumber = employee.PhoneNumber,  
+               IsActive = employee.IsActive,    
+               EmployeeType = employee.EmployeeType,
+               Gender = employee.Gender,
+               HiringDate = employee.HiringDate,
 
 
-        //        var updated = _employeeService.UpdateEmployee(employeeToUpdate) > 0;
-        //        if (updated)
-        //            return RedirectToAction(nameof(Index));
-        //        message = "an error has occured during updating the employee ";
+           });
+       }
 
-        //    }
-        //    catch (Exception ex)
-        //    {
+       [HttpPost] // Post 
+       // from ACTION from url 
+       public IActionResult Edit([FromRoute] int id, UpdatedEmployeeDto /*EmployeeEditViewModel*/ employee)
+       {
+           if (!ModelState.IsValid)// Server Side Validation 
+               return View(employee);
 
-        //        // 1. Log Exception 
-        //        _logger.LogError(ex, ex.Message);
+           var message = string.Empty;
+           try
+           {   ///  Canceled 
+               /// //// Mapping 
+               /// //var employeeToUpdate = new UpdatedEmployeeDto()
+               /// //{
+               /// //    Name = employeeVM.Name,
+               /// //    Address = employeeVM.Address,    
+               /// //    Email = employeeVM.Email,    
+               /// //    Age= employeeVM.Age,
+               /// //    Salary= employeeVM.Salary,   
+               /// //    PhoneNumber = employeeVM.PhoneNumber,            
+               /// //    IsActive = employeeVM.IsActive,      
+               /// //    EmployeeType = employeeVM.EmployeeType,  
+               /// //    Gender = employeeVM.Gender,
+               /// //    HiringDate= employeeVM.HiringDate,
+               ///     
+               /// 
+               /// //};
 
 
-        //        // 2. Set Message 
+                var updated = _employeeService.UpdateEmployee( employee ) > 0;
+                if (updated)
+                    return RedirectToAction(nameof(Index));
 
-        //        message = _environment.IsDevelopment() ? ex.Message : "an error has occured during updating the employee ";
+                message = "an error has occured during updating the employee ";
 
-        //    }
+            }
+            catch (Exception ex)
+            {
 
-        //    // Message 
-        //    ModelState.AddModelError(string.Empty, message);
-        //    return View(employeeVM);
+                // 1. Log Exception 
+                _logger.LogError(ex, ex.Message);
 
-        //}
+
+                // 2. Set Message 
+
+                message = _environment.IsDevelopment() ? ex.Message : "an error has occured during updating the employee ";
+
+            }
+
+            // Message 
+            ModelState.AddModelError(string.Empty, message);
+            return View(employee);
+
+        }
 
         #endregion
 
 
 
-         #region Delete
+        #region Delete
 
         [HttpGet] // Get: /Employee / Delete / id?
         public IActionResult Delete(int? id)
