@@ -34,12 +34,12 @@ namespace LinkDev.IKEA.BLL.Model.Employees
         [Phone]
         //[DataType(DataType.PhoneNumber)]
         public string? PhoneNumber { get; set; }
-
+         
         [Display(Name = "Hiring Date")]
         public DateOnly HiringDate { get; set; }
 
         public Gender Gender { get; set; }
-
+        [Display(Name="Employee Type  ")]
         public EmployeeType EmployeeType { get; set; }
 
     }
