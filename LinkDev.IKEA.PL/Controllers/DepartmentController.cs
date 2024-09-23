@@ -93,45 +93,105 @@ namespace LinkDev.IKEA.PL.Controllers
 
         public IActionResult Create(DepartmentViewModel  departmentVM)
         {
-            if (!ModelState.IsValid) // Server Side Validation 
-                return View(departmentVM);
-            var message = string.Empty;
-            try
-            {
-                var CreatedDepartment = new CreatedDepartmentDto()
-                {
-                    Code = departmentVM.Code,
-                    Name = departmentVM.Name,
-                    Description = departmentVM.Description,
-                    CreationDate = departmentVM.CreationDate,
 
-                };
-                var result = _departmentService.CreateDepartment(CreatedDepartment);
-                if (result > 0)
-                    return RedirectToAction(nameof(Index));
-                else
-                {
 
-                    message = "Department is not Created";
+
+             if (!ModelState.IsValid) // Server Side Validation 
+                 return View(departmentVM);
+             var message = string.Empty;
+             try
+             {
+                 var CreatedDepartment = new CreatedDepartmentDto()
+                 {
+                  Code = departmentVM.Code,
+                  Name = departmentVM.Name,
+                  Description = departmentVM.Description,
+                  CreationDate = departmentVM.CreationDate,
+            
+                 };
+                 var Created = _departmentService.CreateDepartment(CreatedDepartment)>0;
+            
+                 // 3. TempData: is a property of type Dictionary Object (introduced in .NET Framework 3.5)
+                 //            : Used for Transfering the Data between 2 Consuctive Requests
+            
+                 if (!Created)
+                      message = "Department is not Created ";
+            
+                     message = "Department is not Created";
                     ModelState.AddModelError(string.Empty, message);
-                    return View(departmentVM);
-                }
+                    return View(departmentVM);                 
+
+            
+             }
+              catch (Exception ex)
+              {
+                  // 1. Log Exception 
+                  _logger.LogError(ex, ex.Message);
+              
+                  // 2. Set Message 
+              
+                  message = _environment.IsDevelopment() ? ex.Message : "an error has occured during Creating  the department ";
+
+                TempData["Message"]=message;
+                return RedirectToAction(nameof(Index));
+              
+              }
+              
 
 
 
-            }
-            catch (Exception ex)
-            {
-                // 1. Log Exception 
-                _logger.LogError(ex, ex.Message);
 
-                // 2. Set Message 
+            // Refactored
+            ///  if (!ModelState.IsValid) // Server Side Validation 
+            ///      return View(departmentVM);
+            ///  var message = string.Empty;
+            ///  try
+            ///  {
+            ///      var CreatedDepartment = new CreatedDepartmentDto()
+            ///   {
+            ///       Code = departmentVM.Code,
+            ///       Name = departmentVM.Name,
+            ///       Description = departmentVM.Description,
+            ///       CreationDate = departmentVM.CreationDate,
+            ///
+            ///   };
+            ///      var Created = _departmentService.CreateDepartment(CreatedDepartment)>0;
+            ///
+            ///      // 3. TempData: is a property of type Dictionary Object (introduced in .NET Framework 3.5)
+            ///      //            : Used for Transfering the Data between 2 Consuctive Requests
+            ///
+            ///      if (Created)
+            ///      {
+            ///          TempData["Message"] = "Department is Created ";
+            ///
+            ///          return RedirectToAction(nameof(Index)); 
+            ///      }
+            ///      else
+            ///      {
+            ///          TempData["Message"] = "Department is not Created ";
+            ///
+            ///          message = "Department is not Created";
+            ///          ModelState.AddModelError(string.Empty, message);
+            ///          return View(departmentVM);
+            ///      }
+            ///
+            ///
+            ///
+            ///   }
+            ///   catch (Exception ex)
+            ///   {
+            ///       // 1. Log Exception 
+            ///       _logger.LogError(ex, ex.Message);
+            ///   
+            ///       // 2. Set Message 
+            ///   
+            ///       message = _environment.IsDevelopment() ? ex.Message : "an error has occured during Creating  the department ";
+            ///   
+            ///   }
+            ///   ModelState.AddModelError(string.Empty, message);
+            ///   return View(departmentVM);
+            ///
 
-                message = _environment.IsDevelopment() ? ex.Message : "an error has occured during Creating  the department ";
-
-            }
-            ModelState.AddModelError(string.Empty, message);
-            return View(departmentVM);
 
         }
         #endregion
