@@ -2,7 +2,15 @@
 
 @{
     ViewData["Title"] = "Departments";
+    string? viewDataMessage = ViewData["Message"] as string ; // Good :Compiler can Enforce Type Saftey | Notgood : Casting 
+    string? viewBagMessage = ViewBag.Message; // Compiler will Skipp type checking at compilation time 
 }
+
+<div class="alert alert-info" >
+    @ViewData["Message"]
+
+    
+</div>
 
 <h1>Departments</h1>
 

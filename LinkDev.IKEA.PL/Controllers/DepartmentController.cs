@@ -35,11 +35,29 @@ namespace LinkDev.IKEA.PL.Controllers
         [HttpGet] 
         public IActionResult Index()
         {
+
+            //Viwe's Dictionary : Pass Data from Controller [Action] to View (View -->PartialView , (View)_layout  ) 
+
+
+            /// ViewData is Dictionary Type Property (introduced in Asp.Net Framework 3.5 )
+            ///     => iterator helps to transfer the data from controller[Action ] to View 
+
+            ViewData["Massage"] = "Hello ViewData";
+
+
+
+            /// ViewBag is a Dynamic Type Property (introduced in Asp.Net Framework 4.4 based on dynamic Feature  ) 
+            ///     => iterator helps to transfer the data from controller[Action ] to View 
+
+            ViewBag.Message = "Hello ViewBag ";
+
+            ViewBag.Message = new { Id =10 , Name ="Ahmed"};
+
             var departments = _departmentService.GetAllDepartments();
             return View(departments);
         }
         #endregion
-
+         
         #region Details
 
 
