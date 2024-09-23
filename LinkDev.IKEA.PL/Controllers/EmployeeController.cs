@@ -116,7 +116,7 @@ namespace LinkDev.IKEA.PL.Controllers
         #region Update
 
        [HttpGet] // GET : / Employee/Edit/id? 
-       public IActionResult Edit(int? id , /*[FromServices] IDepartmentService departmentService*/)
+       public IActionResult Edit(int? id  /*,[FromServices] IDepartmentService departmentService*/)
        {
            if (id is null)
                return BadRequest();// 400
