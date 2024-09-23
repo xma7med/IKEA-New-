@@ -70,6 +70,8 @@ namespace LinkDev.IKEA.PL.Controllers
         }
 
         [HttpPost] // Post 
+        [ValidateAntiForgeryToken]
+
         public IActionResult Create(CreatedEmployeeDto employee)
         {
             if (!ModelState.IsValid) // Server Side Validation 
@@ -135,8 +137,10 @@ namespace LinkDev.IKEA.PL.Controllers
        }
 
        [HttpPost] // Post 
-       // from ACTION from url 
-       public IActionResult Edit([FromRoute] int id, UpdatedEmployeeDto /*EmployeeEditViewModel*/ employee)
+                  // from ACTION from url 
+        [ValidateAntiForgeryToken]
+
+        public IActionResult Edit([FromRoute] int id, UpdatedEmployeeDto /*EmployeeEditViewModel*/ employee)
        {
            if (!ModelState.IsValid)// Server Side Validation 
                return View(employee);
@@ -207,6 +211,8 @@ namespace LinkDev.IKEA.PL.Controllers
         //}
 
         [HttpPost] // Post
+        [ValidateAntiForgeryToken]
+
         public IActionResult Delete(int id) // the Same name in view --> id 
         {
             var messege = string.Empty;
