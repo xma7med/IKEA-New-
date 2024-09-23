@@ -1,6 +1,7 @@
 ﻿using LinkDev.IKEA.BLL.Model.Employees;
 using LinkDev.IKEA.DAL.Entities.Employees;
 using LinkDev.IKEA.DAL.Preisitance.Repositories.Employees;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +22,11 @@ namespace LinkDev.IKEA.BLL.Services.Employees
 
         public IEnumerable<EmployeeDto> GetAllEmployees()
         {
-            return _employeeReposiory.GetIQueryable().Where(E =>!E.IsDeleted ).Select(employee => new EmployeeDto()
+            return _employeeReposiory
+                .GetIQueryable()
+                .Where(E =>!E.IsDeleted )
+                .Include(E=>E.Department)
+                .Select(employee => new EmployeeDto()
             {
                 Id = employee.Id,
                 Name = employee.Name,
@@ -34,6 +39,8 @@ namespace LinkDev.IKEA.BLL.Services.Employees
                 HiringDate = employee.HiringDate,
                 Gender = employee.Gender.ToString(),
                 EmployeeType =employee.EmployeeType.ToString(),
+                Department=employee.Department.Name // اللقطه دي هيعملك ليزي لودينج 
+
 
             }) .ToList();
         }
@@ -55,6 +62,7 @@ namespace LinkDev.IKEA.BLL.Services.Employees
                     HiringDate = employee.HiringDate,
                     Gender = employee.Gender,
                     EmployeeType = employee.EmployeeType,
+                    DepartmentId=employee.Department.Name,
 
                 };
             return null;
@@ -74,6 +82,7 @@ namespace LinkDev.IKEA.BLL.Services.Employees
                 HiringDate = employeeDto.HiringDate,   
                 Gender = employeeDto.Gender,    
                 EmployeeType = employeeDto.EmployeeType,
+                DepartmentId = employeeDto.DepartmentId,    
                 CreatedBy=1,
                 LastModifiedBy=1,
                 LastModifiedOn=DateTime.UtcNow,
@@ -98,6 +107,7 @@ namespace LinkDev.IKEA.BLL.Services.Employees
                 HiringDate = employeeDto.HiringDate,
                 Gender = employeeDto.Gender,
                 EmployeeType = employeeDto.EmployeeType,
+                DepartmentId = employeeDto.DepartmentId,
                 CreatedBy = 1,
                 LastModifiedBy = 1,
                 LastModifiedOn = DateTime.UtcNow,
