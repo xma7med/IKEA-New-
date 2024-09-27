@@ -13,7 +13,7 @@ namespace LinkDev.IKEA.DAL.Preisitance.Repositories.Employees
     public  class EmployeeRepository:GenaricRepository<Employee>,IEmployeeReposiory
     {
         public EmployeeRepository(ApplictaionDbContext dbContext)
-            :base(dbContext)// Ask CLR for object from ApplicationDbContext Implicilty
+            :base(dbContext)//Now ==> will not ask the obj will came from Class UnitOfWork - //  SBefore Implementing UnitOfWorkDesignPatteern ==> ( Ask CLR for object from ApplicationDbContext Implicilty )
         {
             
         }

@@ -3,6 +3,7 @@ using LinkDev.IKEA.BLL.Services.Employees;
 using LinkDev.IKEA.DAL.Preisitance.Data;
 using LinkDev.IKEA.DAL.Preisitance.Repositories.Departments;
 using LinkDev.IKEA.DAL.Preisitance.Repositories.Employees;
+using LinkDev.IKEA.DAL.Preisitance.UnitOfWork;
 using LinkDev.IKEA.PL.Mapping;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
@@ -35,8 +36,15 @@ namespace LinkDev.IKEA.PL
 
             });
 
-            builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
-            builder.Services.AddScoped<IEmployeeReposiory, EmployeeRepository>();
+
+            // No Need more
+            ///builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+            ///builder.Services.AddScoped<IEmployeeReposiory, EmployeeRepository>();
+
+            // Allow DI to the IUnitOfWork 
+
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
 
 
 

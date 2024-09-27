@@ -68,7 +68,7 @@ namespace LinkDev.IKEA.PL.Controllers
 
         [HttpGet]
 
-        public IActionResult Details(int? id)
+        public IActionResult Details([FromRoute]int? id)
         {
             if (id == null)
                 return BadRequest();

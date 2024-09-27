@@ -40,25 +40,19 @@ namespace LinkDev.IKEA.DAL.Preisitance.Repositories._Generic
         //{
         //    throw new NotImplementedException();
         //}
-        public int Add(T entity)
+        public void Add(T entity)
         {
             // 4 ways to add 
             _dbContext.Set<T>().Add(entity);
-            return _dbContext.SaveChanges();
         }
 
-        public int Update(T entity)
-        {
-            _dbContext.Set<T>().Update(entity);
-            return _dbContext.SaveChanges();
-        }
-
-        public int Delete(T entity)
+        public void Update(T entity)=> _dbContext.Set<T>().Update(entity);
+        
+        public void Delete(T entity)
         {
             // Soft Delete 
             entity.IsDeleted = true;
             _dbContext.Set<T>().Update(entity);
-            return _dbContext.SaveChanges();
             // Hard deleted 
             /// _dbContext.Set<T>().Remove(entity);
             /// return _dbContext.SaveChanges();

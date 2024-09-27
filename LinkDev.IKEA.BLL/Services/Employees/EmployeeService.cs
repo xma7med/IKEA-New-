@@ -1,6 +1,7 @@
 ﻿using LinkDev.IKEA.BLL.Model.Employees;
 using LinkDev.IKEA.DAL.Entities.Employees;
 using LinkDev.IKEA.DAL.Preisitance.Repositories.Employees;
+using LinkDev.IKEA.DAL.Preisitance.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -12,17 +13,20 @@ namespace LinkDev.IKEA.BLL.Services.Employees
 {
     public class EmployeeService : IEmployeeService
     {
-        private readonly IEmployeeReposiory _employeeReposiory;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public EmployeeService(IEmployeeReposiory employeeReposiory)// ASK CLR for Creating Object from Class Implemnting the Interface "IEmployeeReposiory"
+        //private readonly IEmployeeReposiory _employeeReposiory;
+
+        public EmployeeService(IUnitOfWork unitOfWork)// ASK CLR for Creating Object from Class Implemnting the Interface "IUnitOfWork"------------------------------- Cansel ==> "IEmployeeReposiory"
         {
-            _employeeReposiory = employeeReposiory;
+            _unitOfWork = unitOfWork;
+            //_employeeReposiory = employeeReposiory;
         }
 
 
         public IEnumerable<EmployeeDto> GetEmployees(string search)
         {
-            return _employeeReposiory
+            return _unitOfWork.EmployeeReposiory
                 .GetIQueryable()
                 .Where(E =>!E.IsDeleted && (string.IsNullOrEmpty(search) || E.Name.ToLower().Contains(search.ToLower()) ) )
                 .Include(E=>E.Department)
@@ -47,7 +51,7 @@ namespace LinkDev.IKEA.BLL.Services.Employees
 
         public EmployeeDetailsDto? GetEmployeeById(int id)
         {
-            var employee = _employeeReposiory.Get(id);
+            var employee = _unitOfWork.EmployeeReposiory.Get(id);
             if (employee is { })
                 return new EmployeeDetailsDto()
                 {
@@ -90,7 +94,8 @@ namespace LinkDev.IKEA.BLL.Services.Employees
 
             };
 
-            return _employeeReposiory.Add(employee);
+             _unitOfWork.EmployeeReposiory.Add(employee);
+            return _unitOfWork.Complete();
         }
         public int UpdateEmployee(UpdatedEmployeeDto employeeDto)
         {
@@ -115,16 +120,20 @@ namespace LinkDev.IKEA.BLL.Services.Employees
 
             };
 
-            return _employeeReposiory.Update(employee);    
+             _unitOfWork.EmployeeReposiory.Update(employee);   
+            return _unitOfWork.Complete();  
         }
 
         public bool DeleteEmployee(int id)
         {
-            var employee = _employeeReposiory.Get(id);
+            var employeeRepo= _unitOfWork.EmployeeReposiory;
+            var employee = /*_employeeReposiory*/employeeRepo.Get(id);
             if (employee is { })
-                return _employeeReposiory.Delete(employee)>0; 
-            return false;
-        }
+                employeeRepo.Delete(employee);
+            
+
+            return _unitOfWork.Complete()>0;
+        } 
 
        
     }
