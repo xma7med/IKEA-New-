@@ -3,7 +3,9 @@ using LinkDev.IKEA.BLL.Services.Employees;
 using LinkDev.IKEA.DAL.Preisitance.Data;
 using LinkDev.IKEA.DAL.Preisitance.Repositories.Departments;
 using LinkDev.IKEA.DAL.Preisitance.Repositories.Employees;
+using LinkDev.IKEA.PL.Mapping;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 namespace LinkDev.IKEA.PL
 {
@@ -40,9 +42,15 @@ namespace LinkDev.IKEA.PL
 
             // if (x>10)
             builder.Services.AddScoped<IDepartmentService, DepartmentService>();
-            builder.Services.AddScoped<IEmployeeService, EmployeeService>();    
+            builder.Services.AddScoped<IEmployeeService, EmployeeService>();
             // else 
             //builder.Services.AddScoped<IDepartmentService, DepartmentServiceX>();
+
+
+            // Allow DI for AutoMapper 
+            /// Another way 
+            ///builder.Services.AddAutoMapper(Assembly.GetAssembly(typeof(MappingProfile)));
+            builder.Services.AddAutoMapper(M => M.AddProfile(new MappingProfile()));
 
 
 

@@ -1,4 +1,5 @@
-﻿using LinkDev.IKEA.BLL.Model.Department;
+﻿using AutoMapper;
+using LinkDev.IKEA.BLL.Model.Department;
 using LinkDev.IKEA.BLL.Services.Departments;
 using LinkDev.IKEA.DAL.Entities.Departments;
 using LinkDev.IKEA.PL.ViewModels.Departments;
@@ -16,14 +17,17 @@ namespace LinkDev.IKEA.PL.Controllers
 
         #region Services
         private readonly IDepartmentService _departmentService;
+        private readonly IMapper _mapper;
         private readonly ILogger<DepartmentController> _logger;
         private readonly IWebHostEnvironment _environment;
 
         public DepartmentController(IDepartmentService departmentService,
+            IMapper mapper,
             ILogger<DepartmentController> logger,
             IWebHostEnvironment environment)
         {
             _departmentService = departmentService;
+            _mapper = mapper;
             _logger = logger;
             _environment = environment;
         }
@@ -99,15 +103,23 @@ namespace LinkDev.IKEA.PL.Controllers
             var message = string.Empty;
             try
             {
-                var CreatedDepartment = new CreatedDepartmentDto()
-                {
-                    Code = departmentVM.Code,
-                    Name = departmentVM.Name,
-                    Description = departmentVM.Description,
-                    CreationDate = departmentVM.CreationDate,
+                // Manual Mappin
+                ///var CreatedDepartment = new CreatedDepartmentDto()
+                ///{
+                ///    Code = departmentVM.Code,
+                ///    Name = departmentVM.Name,
+                ///    Description = departmentVM.Description,
+                ///    CreationDate = departmentVM.CreationDate,
+                ///
+                ///};
+                ///
 
-                };
+                var CreatedDepartment = _mapper.Map<CreatedDepartmentDto>(departmentVM);
                 var Created = _departmentService.CreateDepartment(CreatedDepartment) > 0;
+
+
+
+
 
                 // 3. TempData: is a property of type Dictionary Object (introduced in .NET Framework 3.5)
                 //            : Used for Transfering the Data between 2 Consuctive Requests
@@ -202,13 +214,18 @@ namespace LinkDev.IKEA.PL.Controllers
 
             if (department == null)
                 return NotFound(); // 404
-            return View(new /*CreatedDepartmentDto*/DepartmentViewModel()
-            {
-                Code = department.Code,
-                Name = department.Name,
-                Description = department.Description,
-                CreationDate = department.CreationDate,
-            });
+
+            // Mapping Using Aut Mapper 
+            var departmentVM = _mapper.Map<DepartmentDetailsDto, DepartmentViewModel>(department);
+            return View(departmentVM
+            //new /*CreatedDepartmentDto*/DepartmentViewModel()
+            //{
+            //    Code = department.Code,
+            //    Name = department.Name,
+            //    Description = department.Description,
+            //    CreationDate = department.CreationDate,
+            //}
+            );
         }
 
         [HttpPost] // Post 
@@ -223,17 +240,21 @@ namespace LinkDev.IKEA.PL.Controllers
             var message = string.Empty;
             try
             {
-                // Mapping 
-                var departmentToUpdate = new UpdatedDepartmentDto()
-                {
-                    Id = departmentVM.Id,
-                    Code = departmentVM.Code,
-                    Name = departmentVM.Name,
-                    Description = departmentVM.Description,
-                    CreationDate = departmentVM.CreationDate,
 
-                };
+                var departmentToUpdate = _mapper.Map<UpdatedDepartmentDto>(departmentVM);
 
+
+                // Manual  Mapping 
+                /// var departmentToUpdate = new UpdatedDepartmentDto()
+                /// {
+                ///     Id = departmentVM.Id,
+                ///     Code = departmentVM.Code,
+                ///     Name = departmentVM.Name,
+                ///     Description = departmentVM.Description,
+                ///     CreationDate = departmentVM.CreationDate,
+                ///
+                /// };
+                ///
 
                 var updated = _departmentService.UpdateDepartment(departmentToUpdate) > 0;
                 if (updated)
