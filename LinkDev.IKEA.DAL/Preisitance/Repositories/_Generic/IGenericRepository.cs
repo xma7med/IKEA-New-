@@ -14,7 +14,7 @@ namespace LinkDev.IKEA.DAL.Preisitance.Repositories._Generic
         IEnumerable<T> GetAll(bool withAsNoTracking = true);
 
         IQueryable<T> GetIQueryable();
-        IEnumerable<T> GetIEnumerable();
+        //IEnumerable<T> GetIEnumerable();
 
         int Add(T entity);
         int Update(T entity);

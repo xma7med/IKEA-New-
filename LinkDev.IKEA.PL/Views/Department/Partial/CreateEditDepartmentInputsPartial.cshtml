@@ -1,5 +1,9 @@
 ﻿@model DepartmentViewModel
 
+@{
+    @ViewBag.CreateEdit
+}
+
 <form asp-action="@ViewBag.Action" class=" col-6">
 
     <div class="form-group mb-3">
@@ -21,10 +25,22 @@
         <input type="date" asp-for="CreationDate" class=" form-control" />
     </div>
 
+    @if (ViewData["Action"] == "Create")
+    {
+        <div class=" mt-4">
+            <input type="submit" value="Create" class="btn btn-primary" />|
+            <a asp-action="Index" class=" btn btn-light"> Back To List </a>
 
-    <div class=" mt-4">
-        <input type="submit" value="Create" class="btn btn-primary" />|
-        <a asp-action="Index" class=" btn btn-light"> Back To List </a>
+        </div>
+    }
+    else
+    {
+        
+        <div class=" mt-4">
+            <input type="submit" value="Edit" class="btn btn-primary" />|
+            <a asp-action="Index" class=" btn btn-light"> Back To List </a>
+        
+        </div>
 
-    </div>
+    }
 </form>

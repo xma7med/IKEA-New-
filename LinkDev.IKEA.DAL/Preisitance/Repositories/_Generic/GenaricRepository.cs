@@ -8,11 +8,22 @@ namespace LinkDev.IKEA.DAL.Preisitance.Repositories._Generic
     {
         private protected readonly ApplictaionDbContext _dbContext;
 
-        public GenaricRepository(ApplictaionDbContext dbContext) 
+        public GenaricRepository(ApplictaionDbContext dbContext) // Ask ClrS
         {
             _dbContext = dbContext;
         }
 
+        public T? Get(int id)
+        {
+            return _dbContext.Set<T>().Find(id);
+            //return _dbContext.Find<T>(id);
+
+            ///     var T = _dbContext.Ts.Local.    (D => D.Id == id);
+            /// if (T == null)
+            ///     _dbContext.Ts.FirstOrDefault(D => D.Id == id);
+            /// return T;
+
+        }
         public IEnumerable<T> GetAll(bool withAsNoTracking = true)
         {
 
@@ -25,21 +36,10 @@ namespace LinkDev.IKEA.DAL.Preisitance.Repositories._Generic
         {
             return _dbContext.Set<T>();
         }
-        public IEnumerable<T> GetIEnumerable()
-        {
-            throw new NotImplementedException();
-        }
-        public T? Get(int id)
-        {
-            return _dbContext.Set<T>().Find(id);
-            //return _dbContext.Find<T>(id);
-
-            ///     var T = _dbContext.Ts.Local.FirstOrDefault(D => D.Id == id);
-            /// if (T == null)
-            ///     _dbContext.Ts.FirstOrDefault(D => D.Id == id);
-            /// return T;
-
-        }
+        //public IEnumerable<T> GetIEnumerable()
+        //{
+        //    throw new NotImplementedException();
+        //}
         public int Add(T entity)
         {
             // 4 ways to add 

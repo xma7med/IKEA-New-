@@ -58,7 +58,7 @@ namespace LinkDev.IKEA.PL.Controllers
         }
         #endregion
          
-        #region Details
+        #region Details- Get ById
 
 
 
@@ -94,52 +94,47 @@ namespace LinkDev.IKEA.PL.Controllers
         public IActionResult Create(DepartmentViewModel  departmentVM)
         {
 
+            if (!ModelState.IsValid) // Server Side Validation 
+                return View(departmentVM);
+            var message = string.Empty;
+            try
+            {
+                var CreatedDepartment = new CreatedDepartmentDto()
+                {
+                    Code = departmentVM.Code,
+                    Name = departmentVM.Name,
+                    Description = departmentVM.Description,
+                    CreationDate = departmentVM.CreationDate,
 
+                };
+                var Created = _departmentService.CreateDepartment(CreatedDepartment) > 0;
 
-             if (!ModelState.IsValid) // Server Side Validation 
-                 return View(departmentVM);
-             var message = string.Empty;
-             try
-             {
-                 var CreatedDepartment = new CreatedDepartmentDto()
-                 {
-                  Code = departmentVM.Code,
-                  Name = departmentVM.Name,
-                  Description = departmentVM.Description,
-                  CreationDate = departmentVM.CreationDate,
-            
-                 };
-                 var Created = _departmentService.CreateDepartment(CreatedDepartment)>0;
-            
-                 // 3. TempData: is a property of type Dictionary Object (introduced in .NET Framework 3.5)
-                 //            : Used for Transfering the Data between 2 Consuctive Requests
-            
-                 if (!Created)
-                      message = "Department is not Created ";
-            
-                     message = "Department is not Created";
+                // 3. TempData: is a property of type Dictionary Object (introduced in .NET Framework 3.5)
+                //            : Used for Transfering the Data between 2 Consuctive Requests
+
+                if (!Created)
+                { 
+                    message = "Department is not Created ";
+
                     ModelState.AddModelError(string.Empty, message);
-                    return View(departmentVM);                 
+                    return View(departmentVM);
+                }
 
-            
-             }
-              catch (Exception ex)
-              {
-                  // 1. Log Exception 
-                  _logger.LogError(ex, ex.Message);
-              
-                  // 2. Set Message 
-              
-                  message = _environment.IsDevelopment() ? ex.Message : "an error has occured during Creating  the department ";
+            }
+            catch (Exception ex)
+            {
+                // 1. Log Exception 
+                _logger.LogError(ex, ex.Message);
 
-                TempData["Message"]=message;
+                // 2. Set Message 
+
+                message = _environment.IsDevelopment() ? ex.Message : "an error has occured during Creating  the department ";
+
+                TempData["Message"] = message;
                 return RedirectToAction(nameof(Index));
-              
-              }
-              
 
-
-
+            }
+            return RedirectToAction(nameof(Index));
 
             // Refactored
             ///  if (!ModelState.IsValid) // Server Side Validation 
@@ -207,7 +202,7 @@ namespace LinkDev.IKEA.PL.Controllers
 
             if (department == null)
                 return NotFound(); // 404
-            return View(new CreatedDepartmentDto()
+            return View(new /*CreatedDepartmentDto*/DepartmentViewModel()
             {
                 Code = department.Code,
                 Name = department.Name,
