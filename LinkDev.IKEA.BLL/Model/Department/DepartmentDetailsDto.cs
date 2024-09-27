@@ -17,5 +17,8 @@ namespace LinkDev.IKEA.BLL.Model.Department
         public string Name { get; set; } = null!;
         public string? Description { get; set; }
         public DateOnly CreationDate { get; set; }
+        public string Department { get; set; } = null!;
+
+
     }
 }

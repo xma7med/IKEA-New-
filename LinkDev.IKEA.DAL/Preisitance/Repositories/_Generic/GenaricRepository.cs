@@ -4,15 +4,26 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LinkDev.IKEA.DAL.Preisitance.Repositories._Generic
 {
-    public class GenaricRepository<T> where T : ModelBase
+    public class GenaricRepository<T> : IGenericRepository<T>  where T : ModelBase 
     {
         private protected readonly ApplictaionDbContext _dbContext;
 
-        public GenaricRepository(ApplictaionDbContext dbContext) 
+        public GenaricRepository(ApplictaionDbContext dbContext) // Ask ClrS
         {
             _dbContext = dbContext;
         }
 
+        public T? Get(int id)
+        {
+            return _dbContext.Set<T>().Find(id);
+            //return _dbContext.Find<T>(id);
+
+            ///     var T = _dbContext.Ts.Local.    (D => D.Id == id);
+            /// if (T == null)
+            ///     _dbContext.Ts.FirstOrDefault(D => D.Id == id);
+            /// return T;
+
+        }
         public IEnumerable<T> GetAll(bool withAsNoTracking = true)
         {
 
@@ -21,21 +32,14 @@ namespace LinkDev.IKEA.DAL.Preisitance.Repositories._Generic
 
             return _dbContext.Set<T>().Where(X => !X.IsDeleted).ToList(); ;
         }
-        public IQueryable<T> GetAllAsIQueryable()
+        public IQueryable<T> GetIQueryable()
         {
             return _dbContext.Set<T>();
         }
-        public T? Get(int id)
-        {
-            return _dbContext.Set<T>().Find(id);
-            //return _dbContext.Find<T>(id);
-
-            ///     var T = _dbContext.Ts.Local.FirstOrDefault(D => D.Id == id);
-            /// if (T == null)
-            ///     _dbContext.Ts.FirstOrDefault(D => D.Id == id);
-            /// return T;
-
-        }
+        //public IEnumerable<T> GetIEnumerable()
+        //{
+        //    throw new NotImplementedException();
+        //}
         public int Add(T entity)
         {
             // 4 ways to add 
@@ -59,6 +63,7 @@ namespace LinkDev.IKEA.DAL.Preisitance.Repositories._Generic
             /// _dbContext.Set<T>().Remove(entity);
             /// return _dbContext.SaveChanges();
         }
+
     }
     
 }

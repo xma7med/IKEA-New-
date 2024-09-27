@@ -1,5 +1,5 @@
 ﻿using LinkDev.IKEA.DAL.Entities;
-using LinkDev.IKEA.DAL.Entities.Department;
+using LinkDev.IKEA.DAL.Entities.Departments;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +13,8 @@ namespace LinkDev.IKEA.DAL.Preisitance.Repositories._Generic
         T? Get(int id);
         IEnumerable<T> GetAll(bool withAsNoTracking = true);
 
-        IQueryable<T> GetAllAsIQueryable();
+        IQueryable<T> GetIQueryable();
+        //IEnumerable<T> GetIEnumerable();
 
         int Add(T entity);
         int Update(T entity);

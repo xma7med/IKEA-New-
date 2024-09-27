@@ -13,14 +13,17 @@ namespace LinkDev.IKEA.PL.Controllers
     {
         #region Service 
         private readonly IEmployeeService _employeeService;
+        //private readonly IDepartmentService _departmentService; 
         private readonly ILogger<EmployeeController> _logger;
         private readonly IWebHostEnvironment _environment;
 
         public EmployeeController(IEmployeeService employeeService,
+            /*IDepartmentService departmentService,*/ // Ask on scope of action
             ILogger<EmployeeController> logger,
             IWebHostEnvironment environment)
         {
             _employeeService = employeeService;
+            //_departmentService = departmentService;
             _logger = logger;
             _environment = environment;
         }
@@ -64,12 +67,16 @@ namespace LinkDev.IKEA.PL.Controllers
         #region Create
 
         [HttpGet] // Get : ../Employee / Create 
-        public IActionResult Create()
+        public IActionResult Create(/*[FromServices]IDepartmentService departmentService*/)
         {
+            // Ask obj by the  4 way  in Create View 
+            //ViewData["Departments"] = departmentService.GetAllDepartments();   
             return View();
         }
 
         [HttpPost] // Post 
+        [ValidateAntiForgeryToken]
+
         public IActionResult Create(CreatedEmployeeDto employee)
         {
             if (!ModelState.IsValid) // Server Side Validation 
@@ -109,7 +116,7 @@ namespace LinkDev.IKEA.PL.Controllers
         #region Update
 
        [HttpGet] // GET : / Employee/Edit/id? 
-       public IActionResult Edit(int? id)
+       public IActionResult Edit(int? id  /*,[FromServices] IDepartmentService departmentService*/)
        {
            if (id is null)
                return BadRequest();// 400
@@ -117,7 +124,11 @@ namespace LinkDev.IKEA.PL.Controllers
 
            if (employee == null)
                return NotFound(); // 404
-           return View(new UpdatedEmployeeDto /*EmployeeEditViewModel*/()
+
+            //ViewData["Departments"] = departmentService.GetAllDepartments();
+
+
+            return View(new UpdatedEmployeeDto /*EmployeeEditViewModel*/()
            {
                Name = employee.Name,
                Address = employee.Address,
@@ -135,8 +146,10 @@ namespace LinkDev.IKEA.PL.Controllers
        }
 
        [HttpPost] // Post 
-       // from ACTION from url 
-       public IActionResult Edit([FromRoute] int id, UpdatedEmployeeDto /*EmployeeEditViewModel*/ employee)
+                  // from ACTION from url 
+        [ValidateAntiForgeryToken]
+
+        public IActionResult Edit([FromRoute] int id, UpdatedEmployeeDto /*EmployeeEditViewModel*/ employee)
        {
            if (!ModelState.IsValid)// Server Side Validation 
                return View(employee);
@@ -207,6 +220,8 @@ namespace LinkDev.IKEA.PL.Controllers
         //}
 
         [HttpPost] // Post
+        [ValidateAntiForgeryToken]
+
         public IActionResult Delete(int id) // the Same name in view --> id 
         {
             var messege = string.Empty;

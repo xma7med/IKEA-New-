@@ -4,6 +4,7 @@ using LinkDev.IKEA.DAL.Preisitance.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LinkDev.IKEA.DAL.Preisitance.Data.Migrations
 {
     [DbContext(typeof(ApplictaionDbContext))]
-    partial class ApplictaionDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240922231918_EmployeeTable")]
+    partial class EmployeeTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,7 +25,7 @@ namespace LinkDev.IKEA.DAL.Preisitance.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("LinkDev.IKEA.DAL.Entities.Departments.Department", b =>
+            modelBuilder.Entity("LinkDev.IKEA.DAL.Entities.Department.Department", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -90,9 +93,6 @@ namespace LinkDev.IKEA.DAL.Preisitance.Data.Migrations
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("GETUTCDATE()");
 
-                    b.Property<int?>("DepartmentId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
@@ -131,24 +131,7 @@ namespace LinkDev.IKEA.DAL.Preisitance.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DepartmentId");
-
                     b.ToTable("Employees");
-                });
-
-            modelBuilder.Entity("LinkDev.IKEA.DAL.Entities.Employees.Employee", b =>
-                {
-                    b.HasOne("LinkDev.IKEA.DAL.Entities.Departments.Department", "Department")
-                        .WithMany("Employees")
-                        .HasForeignKey("DepartmentId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
-                    b.Navigation("Department");
-                });
-
-            modelBuilder.Entity("LinkDev.IKEA.DAL.Entities.Departments.Department", b =>
-                {
-                    b.Navigation("Employees");
                 });
 #pragma warning restore 612, 618
         }

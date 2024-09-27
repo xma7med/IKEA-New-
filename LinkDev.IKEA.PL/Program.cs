@@ -28,7 +28,8 @@ namespace LinkDev.IKEA.PL
 
             builder.Services.AddDbContext<ApplictaionDbContext>((optionsBuilder) =>
             {
-                optionsBuilder.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+                optionsBuilder.UseLazyLoadingProxies()
+                .UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 
             });
 

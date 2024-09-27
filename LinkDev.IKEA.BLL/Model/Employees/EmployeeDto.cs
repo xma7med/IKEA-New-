@@ -38,8 +38,9 @@ namespace LinkDev.IKEA.BLL.Model.Employees
         public string Gender { get; set; } = null!;
 
         public string EmployeeType { get; set; } = null!;
+        public string? Department { get; set; } = null!;
 
-       
+
 
     }
 }

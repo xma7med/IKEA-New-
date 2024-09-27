@@ -1,4 +1,5 @@
-﻿using LinkDev.IKEA.DAL.Entities.Department;
+﻿using LinkDev.IKEA.DAL.Entities.Departments;
+using LinkDev.IKEA.DAL.Entities.Employees;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
@@ -18,11 +19,14 @@ namespace LinkDev.IKEA.DAL.Preisitance.Data.Configurations.Departments
             builder.Property(D => D.Code).HasColumnType("varchar(20)").IsRequired();
             builder.Property(D => D.CreatedOn).HasDefaultValueSql("GETUTCDATE()");
             // builder.Property(D => D.CreatedBy).HasDefaultValueSql("");
-            builder.Property(D=> D.LastModifiedOn).HasComputedColumnSql("GETDATE()");
+             builder.Property(D=> D.LastModifiedOn).HasComputedColumnSql("GETDATE()");
             // builder.Property(D => D.LastModifiedBy).HasComputedColumnSql("");
 
-
+            builder.HasMany(D => D.Employees)
+                    .WithOne(E => E.Department)
+                    .HasForeignKey(E => E.DepartmentId)
+                    .OnDelete(DeleteBehavior.SetNull); // When delete P.K Entity Set it null in employee
 
         }
     }
-}
+}  
