@@ -11,7 +11,7 @@ using System.Reflection;
 
 namespace LinkDev.IKEA.PL
 {
-    // New 
+    // New   
     public class Program
     {
         //  Entry Point 
