@@ -114,7 +114,7 @@ namespace LinkDev.IKEA.BLL.Services.Employees
             // Delete 
 
              _unitOfWork.EmployeeReposiory.Add(employee);
-            return _unitOfWork.Complete();
+            return _unitOfWork.CompleteAsync();
         }
         public int UpdateEmployee(UpdatedEmployeeDto employeeDto)
         {
@@ -140,7 +140,7 @@ namespace LinkDev.IKEA.BLL.Services.Employees
             };
 
              _unitOfWork.EmployeeReposiory.Update(employee);   
-            return _unitOfWork.Complete();  
+            return _unitOfWork.CompleteAsync();  
         }
 
         public bool DeleteEmployee(int id)
@@ -151,7 +151,7 @@ namespace LinkDev.IKEA.BLL.Services.Employees
                 employeeRepo.Delete(employee);
             
 
-            return _unitOfWork.Complete()>0;
+            return _unitOfWork.CompleteAsync()>0;
         } 
 
        

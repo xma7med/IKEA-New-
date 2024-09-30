@@ -87,7 +87,7 @@ namespace LinkDev.IKEA.BLL.Services.Departments
 
             _unitOfWork.DepartmentRepository.Add(department);
 
-            return _unitOfWork.Complete();  
+            return _unitOfWork.CompleteAsync();  
         }
 
         public int UpdateDepartment(UpdatedDepartmentDto departmentDto)
@@ -105,7 +105,7 @@ namespace LinkDev.IKEA.BLL.Services.Departments
             };
 
              _unitOfWork.DepartmentRepository.Update(department);
-            return _unitOfWork.Complete();  
+            return _unitOfWork.CompleteAsync();  
         }
 
         public bool DeleteDepartment(int id)
@@ -116,7 +116,7 @@ namespace LinkDev.IKEA.BLL.Services.Departments
 
             if (department is { })
                  departmentRepo.Delete(department) ;
-            return _unitOfWork.Complete() >0;
+            return _unitOfWork.CompleteAsync() >0;
         }
 
         
