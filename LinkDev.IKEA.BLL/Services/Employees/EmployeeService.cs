@@ -143,15 +143,15 @@ namespace LinkDev.IKEA.BLL.Services.Employees
             return await _unitOfWork.CompleteAsync();  
         }
 
-        public bool DeleteEmployee(int id)
+        public async  Task<bool > DeleteEmployeeAsync(int id)
         {
             var employeeRepo= _unitOfWork.EmployeeReposiory;
-            var employee = /*_employeeReposiory*/employeeRepo.Get(id);
+            var employee = await  /*_employeeReposiory*/employeeRepo.GetAsync(id);
             if (employee is { })
                 employeeRepo.Delete(employee);
             
 
-            return _unitOfWork.CompleteAsync()>0;
+            return await _unitOfWork.CompleteAsync()>0;
         } 
 
        
