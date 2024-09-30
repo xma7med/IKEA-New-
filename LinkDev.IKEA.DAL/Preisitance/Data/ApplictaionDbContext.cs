@@ -1,5 +1,6 @@
 ﻿using LinkDev.IKEA.DAL.Entities.Departments;
 using LinkDev.IKEA.DAL.Entities.Employees;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace LinkDev.IKEA.DAL.Preisitance.Data
 {
-    public class ApplictaionDbContext : DbContext
+    public class ApplictaionDbContext : IdentityDbContext
     {
 
         public ApplictaionDbContext(DbContextOptions<ApplictaionDbContext> option):base(option)
@@ -27,6 +28,11 @@ namespace LinkDev.IKEA.DAL.Preisitance.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // u have to call OnModelCreating for the base .. Why ? it has a dbsets = Entitiy which have Configuration 
+
+            base.OnModelCreating(modelBuilder);
+
+
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly()); // Dont forgt using --> using System.Reflection;
 
         }
