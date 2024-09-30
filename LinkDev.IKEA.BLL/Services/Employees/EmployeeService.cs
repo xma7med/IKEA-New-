@@ -29,9 +29,9 @@ namespace LinkDev.IKEA.BLL.Services.Employees
         }
 
 
-        public IEnumerable<EmployeeDto> GetEmployees(string search)
+        public async Task<IEnumerable<EmployeeDto>> GetEmployeesAsync(string search)
         {
-            return _unitOfWork.EmployeeReposiory
+            return await _unitOfWork.EmployeeReposiory
                 .GetIQueryable()
                 .Where(E =>!E.IsDeleted && (string.IsNullOrEmpty(search) || E.Name.ToLower().Contains(search.ToLower()) ) )
                 .Include(E=>E.Department)
@@ -53,12 +53,12 @@ namespace LinkDev.IKEA.BLL.Services.Employees
 
 
 
-                }) .ToList();
+                }) .ToListAsync();
         }
 
-        public EmployeeDetailsDto? GetEmployeeById(int id)
+        public async Task<EmployeeDetailsDto?> GetEmployeeByIdAsync(int id)
         {
-            var employee = _unitOfWork.EmployeeReposiory.Get(id);
+            var employee = await  _unitOfWork.EmployeeReposiory.GetAsync(id);
             if (employee is { })
                 return new EmployeeDetailsDto()
                 {
@@ -80,7 +80,7 @@ namespace LinkDev.IKEA.BLL.Services.Employees
             return null;
         }
 
-        public int CreateEmployee(CreatedEmployeeDto employeeDto)
+        public async Task<int> CreateEmployeeAsync(CreatedEmployeeDto employeeDto)
         {
 
 
@@ -107,16 +107,16 @@ namespace LinkDev.IKEA.BLL.Services.Employees
             };
 
             if (employeeDto.Image != null)
-                employee.Image = _attachmentService.Upload(employeeDto.Image, "images");
+                employee.Image =await  _attachmentService.UploadFileAsync(employeeDto.Image, "images");
 
             // ADD 
             // Update 
             // Delete 
 
              _unitOfWork.EmployeeReposiory.Add(employee);
-            return _unitOfWork.CompleteAsync();
+            return await _unitOfWork.CompleteAsync();
         }
-        public int UpdateEmployee(UpdatedEmployeeDto employeeDto)
+        public async  Task<int> UpdateEmployeeAsync(UpdatedEmployeeDto employeeDto)
         {
             var employee = new Employee()
             {
@@ -140,7 +140,7 @@ namespace LinkDev.IKEA.BLL.Services.Employees
             };
 
              _unitOfWork.EmployeeReposiory.Update(employee);   
-            return _unitOfWork.CompleteAsync();  
+            return await _unitOfWork.CompleteAsync();  
         }
 
         public bool DeleteEmployee(int id)

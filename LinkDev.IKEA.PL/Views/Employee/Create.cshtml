@@ -5,7 +5,7 @@
 @{
     ViewData["Title"] = "Create";
 
-    var Departments = new SelectList(departmentService.GetAllDepartments()/* ViewData["Departments"] as IEnumerable<DepartmentDto> */, nameof(DepartmentDto.Id), nameof(DepartmentDto.Name));
+    var Departments = new SelectList(departmentService.GetAllDepartmentsAsync()/* ViewData["Departments"] as IEnumerable<DepartmentDto> */, nameof(DepartmentDto.Id), nameof(DepartmentDto.Name));
 }
 
 

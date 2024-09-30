@@ -57,7 +57,7 @@ namespace LinkDev.IKEA.PL.Controllers
 
             ViewBag.Message = new { Id =10 , Name ="Ahmed"};
 
-            var departments = _departmentService.GetAllDepartments();
+            var departments = _departmentService.GetAllDepartmentsAsync();
             return View(departments);
         }
         #endregion
@@ -72,7 +72,7 @@ namespace LinkDev.IKEA.PL.Controllers
         {
             if (id == null)
                 return BadRequest();
-            var department = _departmentService.GetDepartmentById(id.Value);
+            var department = _departmentService.GetDepartmentByIdAsync(id.Value);
 
             if (department == null)
                 return NotFound();
@@ -115,7 +115,7 @@ namespace LinkDev.IKEA.PL.Controllers
                 ///
 
                 var CreatedDepartment = _mapper.Map<CreatedDepartmentDto>(departmentVM);
-                var Created = _departmentService.CreateDepartment(CreatedDepartment) > 0;
+                var Created = _departmentService.CreateDepartmentAsync(CreatedDepartment) > 0;
 
 
 
@@ -210,7 +210,7 @@ namespace LinkDev.IKEA.PL.Controllers
         {
             if (id is null)
                 return BadRequest();// 400
-            var department = _departmentService.GetDepartmentById(id.Value);
+            var department = _departmentService.GetDepartmentByIdAsync(id.Value);
 
             if (department == null)
                 return NotFound(); // 404
@@ -256,7 +256,7 @@ namespace LinkDev.IKEA.PL.Controllers
                 /// };
                 ///
 
-                var updated = _departmentService.UpdateDepartment(departmentToUpdate) > 0;
+                var updated = _departmentService.UpdateDepartmentAsync(departmentToUpdate) > 0;
                 if (updated)
                     return RedirectToAction(nameof(Index));
                 message = "an error has occured during updating the department ";
@@ -292,7 +292,7 @@ namespace LinkDev.IKEA.PL.Controllers
         {
             if (id == null)
                 return BadRequest();
-            var department = _departmentService.GetDepartmentById(id.Value);
+            var department = _departmentService.GetDepartmentByIdAsync(id.Value);
             if (department == null)
                 return NotFound();
 
