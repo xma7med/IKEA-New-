@@ -1,6 +1,8 @@
-﻿using LinkDev.IKEA.BLL.Model.Employees;
+﻿using LinkDev.IKEA.BLL.Common.Services.Attachments;
+using LinkDev.IKEA.BLL.Model.Employees;
 using LinkDev.IKEA.DAL.Entities.Employees;
 using LinkDev.IKEA.DAL.Preisitance.Repositories.Employees;
+using LinkDev.IKEA.DAL.Preisitance.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -12,19 +14,26 @@ namespace LinkDev.IKEA.BLL.Services.Employees
 {
     public class EmployeeService : IEmployeeService
     {
-        private readonly IEmployeeReposiory _employeeReposiory;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IAttachmentService _attachmentService;
 
-        public EmployeeService(IEmployeeReposiory employeeReposiory)// ASK CLR for Creating Object from Class Implemnting the Interface "IEmployeeReposiory"
+        //private readonly IEmployeeReposiory _employeeReposiory;
+
+        public EmployeeService(IUnitOfWork unitOfWork,
+            IAttachmentService attachmentService
+            )// ASK CLR for Creating Object from Class Implemnting the Interface "IUnitOfWork"------------------------------- Cansel ==> "IEmployeeReposiory"
         {
-            _employeeReposiory = employeeReposiory;
+            _unitOfWork = unitOfWork;
+            _attachmentService = attachmentService;
+            //_employeeReposiory = employeeReposiory;
         }
 
 
-        public IEnumerable<EmployeeDto> GetAllEmployees()
+        public async Task<IEnumerable<EmployeeDto>> GetEmployeesAsync(string search)
         {
-            return _employeeReposiory
+            return await _unitOfWork.EmployeeReposiory
                 .GetIQueryable()
-                .Where(E =>!E.IsDeleted )
+                .Where(E =>!E.IsDeleted && (string.IsNullOrEmpty(search) || E.Name.ToLower().Contains(search.ToLower()) ) )
                 .Include(E=>E.Department)
                 .Select(employee => new EmployeeDto()
                 {
@@ -39,15 +48,17 @@ namespace LinkDev.IKEA.BLL.Services.Employees
                       HiringDate = employee.HiringDate,
                       Gender = employee.Gender.ToString(),
                       EmployeeType =employee.EmployeeType.ToString(),
-                      Department=employee.Department.Name // اللقطه دي هيعملك ليزي لودينج 
+                      Department=employee.Department.Name ,// اللقطه دي هيعملك ليزي لودينج 
+                      Image = employee.Image,
 
 
-                }) .ToList();
+
+                }) .ToListAsync();
         }
 
-        public EmployeeDetailsDto? GetEmployeeById(int id)
+        public async Task<EmployeeDetailsDto?> GetEmployeeByIdAsync(int id)
         {
-            var employee = _employeeReposiory.Get(id);
+            var employee = await  _unitOfWork.EmployeeReposiory.GetAsync(id);
             if (employee is { })
                 return new EmployeeDetailsDto()
                 {
@@ -63,13 +74,17 @@ namespace LinkDev.IKEA.BLL.Services.Employees
                     Gender = employee.Gender,
                     EmployeeType = employee.EmployeeType,
                     Department=employee.Department?.Name??"",
+                    Image = employee.Image, 
 
                 };
             return null;
         }
 
-        public int CreateEmployee(CreatedEmployeeDto employeeDto)
+        public async Task<int> CreateEmployeeAsync(CreatedEmployeeDto employeeDto)
         {
+
+
+
             var employee = new Employee()
             { 
                 Name = employeeDto.Name,
@@ -82,7 +97,8 @@ namespace LinkDev.IKEA.BLL.Services.Employees
                 HiringDate = employeeDto.HiringDate,   
                 Gender = employeeDto.Gender,    
                 EmployeeType = employeeDto.EmployeeType,
-                DepartmentId = employeeDto.DepartmentId,    
+                DepartmentId = employeeDto.DepartmentId, 
+                //Image= employeeDto.Image,   
                 CreatedBy=1,
                 LastModifiedBy=1,
                 LastModifiedOn=DateTime.UtcNow,
@@ -90,9 +106,17 @@ namespace LinkDev.IKEA.BLL.Services.Employees
 
             };
 
-            return _employeeReposiory.Add(employee);
+            if (employeeDto.Image != null)
+                employee.Image =await  _attachmentService.UploadFileAsync(employeeDto.Image, "images");
+
+            // ADD 
+            // Update 
+            // Delete 
+
+             _unitOfWork.EmployeeReposiory.Add(employee);
+            return await _unitOfWork.CompleteAsync();
         }
-        public int UpdateEmployee(UpdatedEmployeeDto employeeDto)
+        public async  Task<int> UpdateEmployeeAsync(UpdatedEmployeeDto employeeDto)
         {
             var employee = new Employee()
             {
@@ -115,16 +139,20 @@ namespace LinkDev.IKEA.BLL.Services.Employees
 
             };
 
-            return _employeeReposiory.Update(employee);    
+             _unitOfWork.EmployeeReposiory.Update(employee);   
+            return await _unitOfWork.CompleteAsync();  
         }
 
-        public bool DeleteEmployee(int id)
+        public async  Task<bool > DeleteEmployeeAsync(int id)
         {
-            var employee = _employeeReposiory.Get(id);
+            var employeeRepo= _unitOfWork.EmployeeReposiory;
+            var employee = await  /*_employeeReposiory*/employeeRepo.GetAsync(id);
             if (employee is { })
-                return _employeeReposiory.Delete(employee)>0; 
-            return false;
-        }
+                employeeRepo.Delete(employee);
+            
+
+            return await _unitOfWork.CompleteAsync()>0;
+        } 
 
        
     }

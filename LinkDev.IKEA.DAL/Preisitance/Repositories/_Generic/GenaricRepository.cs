@@ -12,10 +12,18 @@ namespace LinkDev.IKEA.DAL.Preisitance.Repositories._Generic
         {
             _dbContext = dbContext;
         }
-
-        public T? Get(int id)
+        public async Task<IEnumerable<T>> GetAllAsync(bool withAsNoTracking = true)
         {
-            return _dbContext.Set<T>().Find(id);
+
+            if (withAsNoTracking)
+                return await _dbContext.Set<T>().Where (X=>!X.IsDeleted).AsNoTracking().ToListAsync();
+
+            return await _dbContext.Set<T>().Where(X => !X.IsDeleted).ToListAsync() ;
+        }
+
+        public async Task<T?> GetAsync(int id)
+        {
+            return await _dbContext.Set<T>().FindAsync(id);
             //return _dbContext.Find<T>(id);
 
             ///     var T = _dbContext.Ts.Local.    (D => D.Id == id);
@@ -23,14 +31,6 @@ namespace LinkDev.IKEA.DAL.Preisitance.Repositories._Generic
             ///     _dbContext.Ts.FirstOrDefault(D => D.Id == id);
             /// return T;
 
-        }
-        public IEnumerable<T> GetAll(bool withAsNoTracking = true)
-        {
-
-            if (withAsNoTracking)
-                return _dbContext.Set<T>().Where (X=>!X.IsDeleted).AsNoTracking().ToList();
-
-            return _dbContext.Set<T>().Where(X => !X.IsDeleted).ToList(); ;
         }
         public IQueryable<T> GetIQueryable()
         {
@@ -40,30 +40,25 @@ namespace LinkDev.IKEA.DAL.Preisitance.Repositories._Generic
         //{
         //    throw new NotImplementedException();
         //}
-        public int Add(T entity)
+        public void Add(T entity)
         {
             // 4 ways to add 
             _dbContext.Set<T>().Add(entity);
-            return _dbContext.SaveChanges();
         }
 
-        public int Update(T entity)
-        {
-            _dbContext.Set<T>().Update(entity);
-            return _dbContext.SaveChanges();
-        }
-
-        public int Delete(T entity)
+        public void Update(T entity)=> _dbContext.Set<T>().Update(entity);
+        
+        public void Delete(T entity)
         {
             // Soft Delete 
             entity.IsDeleted = true;
             _dbContext.Set<T>().Update(entity);
-            return _dbContext.SaveChanges();
             // Hard deleted 
             /// _dbContext.Set<T>().Remove(entity);
             /// return _dbContext.SaveChanges();
         }
 
+        
     }
     
 }

@@ -77,9 +77,10 @@
 else
 {
     <!-- Action Buttons -->
-    <form asp-action="Delete" asp-route="@ViewBag.Id" method="post" class="mt-4">
+    <form asp-action="Delete" asp-route-id="@ViewBag.Id" method="post" class="mt-4">
         <input type="submit" value="Delete" class="btn btn-danger" />
         <a asp-action="Index" class="btn btn-secondary">Cancel</a>
     </form>
+
 }
 

@@ -12,7 +12,7 @@ namespace LinkDev.IKEA.DAL.Preisitance.Repositories.Departments
 {
     public class DepartmentRepository : GenaricRepository<Department> , IDepartmentRepository
     {
-        public DepartmentRepository(ApplictaionDbContext dbContext):base(dbContext) // Ask CLR for object from ApplicationDbContext Implicilty
+        public DepartmentRepository(ApplictaionDbContext dbContext):base(dbContext) // Now ==> will not ask the obj will came from Class UnitOfWork 
         {
             
         }

@@ -1,9 +1,13 @@
+using LinkDev.IKEA.BLL.Common.Services.Attachments;
 using LinkDev.IKEA.BLL.Services.Departments;
 using LinkDev.IKEA.BLL.Services.Employees;
 using LinkDev.IKEA.DAL.Preisitance.Data;
 using LinkDev.IKEA.DAL.Preisitance.Repositories.Departments;
 using LinkDev.IKEA.DAL.Preisitance.Repositories.Employees;
+using LinkDev.IKEA.DAL.Preisitance.UnitOfWork;
+using LinkDev.IKEA.PL.Mapping;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 namespace LinkDev.IKEA.PL
 {
@@ -33,18 +37,36 @@ namespace LinkDev.IKEA.PL
 
             });
 
-            builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
-            builder.Services.AddScoped<IEmployeeReposiory, EmployeeRepository>();
+
+            // No Need more
+            ///builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+            ///builder.Services.AddScoped<IEmployeeReposiory, EmployeeRepository>();
+
+            // Allow DI to the IUnitOfWork 
+
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
 
 
 
             // if (x>10)
             builder.Services.AddScoped<IDepartmentService, DepartmentService>();
-            builder.Services.AddScoped<IEmployeeService, EmployeeService>();    
+            builder.Services.AddScoped<IEmployeeService, EmployeeService>();
             // else 
             //builder.Services.AddScoped<IDepartmentService, DepartmentServiceX>();
 
 
+            // Allow DI for AutoMapper 
+            /// Another way 
+            ///builder.Services.AddAutoMapper(Assembly.GetAssembly(typeof(MappingProfile)));
+            builder.Services.AddAutoMapper(M => M.AddProfile(new MappingProfile()));
+
+
+
+
+
+            // for AttachmentService
+            builder.Services.AddTransient<IAttachmentService, AttachmentService>(); 
 
             #endregion
 
