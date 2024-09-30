@@ -1,11 +1,13 @@
 using LinkDev.IKEA.BLL.Common.Services.Attachments;
 using LinkDev.IKEA.BLL.Services.Departments;
 using LinkDev.IKEA.BLL.Services.Employees;
+using LinkDev.IKEA.DAL.Entities.Identity;
 using LinkDev.IKEA.DAL.Preisitance.Data;
 using LinkDev.IKEA.DAL.Preisitance.Repositories.Departments;
 using LinkDev.IKEA.DAL.Preisitance.Repositories.Employees;
 using LinkDev.IKEA.DAL.Preisitance.UnitOfWork;
 using LinkDev.IKEA.PL.Mapping;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
@@ -66,13 +68,45 @@ namespace LinkDev.IKEA.PL
 
 
             // for AttachmentService
-            builder.Services.AddTransient<IAttachmentService, AttachmentService>(); 
-
-            #endregion
+            builder.Services.AddTransient<IAttachmentService, AttachmentService>();
 
 
+            /// Allow DI for the 3 main Identity Services And Their Dependancies 
+            /// First Overload Add Identity Services 
+           // builder.Services.AddIdentity<ApplicationUser, IdentityRole>();
+            /// Second overload ..... & Identity Configuration  
+			builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+            {
+                // Password settings
+                options.Password.RequiredLength = 5;
+                options.Password.RequireDigit = true;
+                options.Password.RequireNonAlphanumeric = true; // Require special characters like #, $, etc.
+                options.Password.RequireUppercase = true;
+                options.Password.RequireLowercase = true;
+                options.Password.RequiredUniqueChars = 1;
 
-            var app = builder.Build();
+                // User settings
+                options.User.RequireUniqueEmail = true;
+                // options.User.AllowedUserNameCharacters = "asdmasd;asdmas;ldfdf"; // Custom allowed characters for usernames (currently commented out)
+
+                // Lockout settings
+                options.Lockout.AllowedForNewUsers = true;
+                options.Lockout.MaxFailedAccessAttempts = 5;
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromDays(5);
+            })
+                .AddEntityFrameworkStores<ApplictaionDbContext>();
+
+
+			//builder.Services.AddScoped<UserManager<ApplicationUser>>();
+			//builder.Services.AddScoped<SignInManager<ApplicationUser>>();
+			//builder.Services.AddScoped<RoleManager<IdentityRole>>();
+
+
+			#endregion
+
+
+
+			var app = builder.Build();
 
 
 

@@ -1,5 +1,6 @@
 ﻿using LinkDev.IKEA.DAL.Entities.Departments;
 using LinkDev.IKEA.DAL.Entities.Employees;
+using LinkDev.IKEA.DAL.Entities.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace LinkDev.IKEA.DAL.Preisitance.Data
 {
-    public class ApplictaionDbContext : IdentityDbContext
+    public class ApplictaionDbContext : IdentityDbContext<ApplicationUser>
     {
 
         public ApplictaionDbContext(DbContextOptions<ApplictaionDbContext> option):base(option)
