@@ -1,4 +1,5 @@
-﻿using LinkDev.IKEA.BLL.Model.Employees;
+﻿using LinkDev.IKEA.BLL.Common.Services.Attachments;
+using LinkDev.IKEA.BLL.Model.Employees;
 using LinkDev.IKEA.DAL.Entities.Employees;
 using LinkDev.IKEA.DAL.Preisitance.Repositories.Employees;
 using LinkDev.IKEA.DAL.Preisitance.UnitOfWork;
@@ -14,12 +15,16 @@ namespace LinkDev.IKEA.BLL.Services.Employees
     public class EmployeeService : IEmployeeService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IAttachmentService _attachmentService;
 
         //private readonly IEmployeeReposiory _employeeReposiory;
 
-        public EmployeeService(IUnitOfWork unitOfWork)// ASK CLR for Creating Object from Class Implemnting the Interface "IUnitOfWork"------------------------------- Cansel ==> "IEmployeeReposiory"
+        public EmployeeService(IUnitOfWork unitOfWork,
+            IAttachmentService attachmentService
+            )// ASK CLR for Creating Object from Class Implemnting the Interface "IUnitOfWork"------------------------------- Cansel ==> "IEmployeeReposiory"
         {
             _unitOfWork = unitOfWork;
+            _attachmentService = attachmentService;
             //_employeeReposiory = employeeReposiory;
         }
 
@@ -74,6 +79,9 @@ namespace LinkDev.IKEA.BLL.Services.Employees
 
         public int CreateEmployee(CreatedEmployeeDto employeeDto)
         {
+
+
+
             var employee = new Employee()
             { 
                 Name = employeeDto.Name,
@@ -86,13 +94,21 @@ namespace LinkDev.IKEA.BLL.Services.Employees
                 HiringDate = employeeDto.HiringDate,   
                 Gender = employeeDto.Gender,    
                 EmployeeType = employeeDto.EmployeeType,
-                DepartmentId = employeeDto.DepartmentId,    
+                DepartmentId = employeeDto.DepartmentId, 
+                //Image= employeeDto.Image,   
                 CreatedBy=1,
                 LastModifiedBy=1,
                 LastModifiedOn=DateTime.UtcNow,
 
 
             };
+
+            if (employeeDto.Image != null)
+                employee.Image = _attachmentService.Upload(employeeDto.Image, "images");
+
+            // ADD 
+            // Update 
+            // Delete 
 
              _unitOfWork.EmployeeReposiory.Add(employee);
             return _unitOfWork.Complete();
