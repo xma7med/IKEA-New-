@@ -1,15 +1,12 @@
 ﻿using AutoMapper;
 using LinkDev.IKEA.BLL.Model.Department;
 using LinkDev.IKEA.BLL.Services.Departments;
-using LinkDev.IKEA.DAL.Entities.Departments;
 using LinkDev.IKEA.PL.ViewModels.Departments;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Hosting;
-using System;
 
 namespace LinkDev.IKEA.PL.Controllers
 {
-    
+
     public class DepartmentController : Controller
     {
         //[FromServices]

@@ -40,6 +40,9 @@ namespace LinkDev.IKEA.DAL.Preisitance.Repositories._Generic
         //{
         //    throw new NotImplementedException();
         //}
+
+
+
         public void Add(T entity)
         {
             // 4 ways to add 
