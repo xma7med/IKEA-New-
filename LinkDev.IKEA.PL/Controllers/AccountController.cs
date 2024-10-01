@@ -120,7 +120,16 @@ namespace LinkDev.IKEA.PL.Controllers
 
         #endregion
 
+        #region Sign out
 
+        public async new Task<IActionResult> SignOut() // new to hidden the SignOut i gained from IdentityServices 
+        { 
+            await _signInManager.SignOutAsync();
+
+            return RedirectToAction(nameof(SignIn)); // I Specifies it in Schema Configuration 
+        }
+
+        #endregion
 
 
     }
