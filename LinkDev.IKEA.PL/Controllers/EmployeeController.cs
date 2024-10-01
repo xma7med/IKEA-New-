@@ -1,10 +1,13 @@
 ﻿using LinkDev.IKEA.BLL.Model.Employees;
 using LinkDev.IKEA.BLL.Services.Employees;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LinkDev.IKEA.PL.Controllers
 {
-    public class EmployeeController : Controller
+	[Authorize]
+
+	public class EmployeeController : Controller
     {
         #region Service 
         private readonly IEmployeeService _employeeService;

@@ -2,12 +2,14 @@
 using LinkDev.IKEA.BLL.Model.Department;
 using LinkDev.IKEA.BLL.Services.Departments;
 using LinkDev.IKEA.PL.ViewModels.Departments;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LinkDev.IKEA.PL.Controllers
 {
+	[Authorize]
 
-    public class DepartmentController : Controller
+	public class DepartmentController : Controller
     {
         //[FromServices]
         //public IDepartmentService _departmentService { get; } = null!;

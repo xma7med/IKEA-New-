@@ -71,6 +71,7 @@ namespace LinkDev.IKEA.PL
             builder.Services.AddTransient<IAttachmentService, AttachmentService>();
 
 
+            /***************************************************************************************************************************************************************************************/
             /// Allow DI for the 3 main Identity Services And Their Dependancies 
             /// First Overload Add Identity Services 
            // builder.Services.AddIdentity<ApplicationUser, IdentityRole>();
@@ -102,6 +103,47 @@ namespace LinkDev.IKEA.PL
 			//builder.Services.AddScoped<RoleManager<IdentityRole>>();
 
 
+
+			/***************************************************************************************************************************************************************************************/
+
+
+
+			// Configure Default Schema (Identity.Applictation ) For the token 
+
+			//Configre the Defualt Authentication Schema  for the (Specified )default schema 
+			builder.Services.ConfigureApplicationCookie(option =>
+            {
+                option.LoginPath = "/Account/SignIn";
+                option.AccessDeniedPath = "/Home/Error";
+
+                option.ExpireTimeSpan = TimeSpan.FromDays(1);   
+                option.LogoutPath = "/Account/SignIn";
+
+				// Search
+			});
+
+
+
+			// AddIdentity add the require sevices for security & dependancies  include the [ calling of AddAuthentication ] but i write / call it to do some  Configureation
+			builder.Services.AddAuthentication(options =>
+			{
+				options.DefaultAuthenticateScheme = "Identity.Application";// Hamda
+				options.DefaultChallengeScheme = "Identity.Application";
+			})
+            .AddCookie("Hamda", ".AspNetCore.Hamda", options =>
+            {
+            	options.LoginPath = "/Account/Login";
+            	options.AccessDeniedPath = "/Home/Error";
+            	options.ExpireTimeSpan = TimeSpan.FromDays(10);
+            	options.LogoutPath = "/Account/SignIn";
+            });
+
+
+
+
+
+
+
 			#endregion
 
 
@@ -125,6 +167,8 @@ namespace LinkDev.IKEA.PL
 
             app.UseRouting();
 
+
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllerRoute(
